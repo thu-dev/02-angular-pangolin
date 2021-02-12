@@ -1,0 +1,19 @@
+<!-- nav -->
+<h1 style="text-align: center;">Welcome to Pangolin's Address Book</h1>
+<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="user">
+    <div class="navbar-nav" style="position: relative; left: 38%;">
+        <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        <a class="nav-item nav-link" routerLink="/users/edit/{{ user.id }}" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">My Account</a>
+        <a class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Pangodin's Community</a>
+        <a class="nav-item nav-link" routerLink="/friends" routerLinkActive="active">Friend list</a>
+        <a class="nav-item nav-link" (click)="logout()">Logout</a>
+    </div>
+</nav>
+
+<!-- main app container -->
+<div class="app-container" [ngClass]="{ 'bg-light': user }">
+    <alert></alert>
+    <router-outlet></router-outlet>
+</div>
+
+<img src="https://image.freepik.com/vecteurs-libre/cartoon-pangolin_81257-34.jpg" alt="pangodin's address" width="250" style="position: relative; left: 45vw;">

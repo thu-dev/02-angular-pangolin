@@ -1,0 +1,45 @@
+<h1>Pangolin Friends</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 15%">First Name</th>
+            <th style="width: 15%">Last Name</th>
+            <th style="width: 15%">Username</th>
+            <th style="width: 15%">Age</th>
+            <th style="width: 15%">Family</th>
+            <th style="width: 15%">Race</th>
+            <th style="width: 15%">Food</th>
+            <th style="width: 10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr *ngFor="let friend of friends">
+            <td>{{friend.firstName}}</td>
+            <td>{{friend.lastName}}</td>
+            <td>{{friend.username}}</td>
+            <td>{{friend.age}}</td>
+            <td>{{friend.family}}</td>
+            <td>{{friend.race}}</td>
+            <td>{{friend.food}}</td>
+            
+            <td style="white-space: nowrap">
+
+                <!-- <button (click)="deleteFriend(friend.id)" class="btn btn-sm btn-primary mr-1" [disabled]="friend.isDeleting">
+                    <span *ngIf="friend.isDeleting" class="spinner-border spinner-border-sm"></span>
+                    <span *ngIf="!friend.isDeleting">Delete</span>
+                </button> -->
+
+                <button type="Button" (click)="remove(index)" class="btn btn-sm btn-primary mr-1">Remove</button>
+
+            </td> 
+        
+        </tr>
+        <tr *ngIf="!friends">
+            <td colspan="4" class="text-center">
+                <span class="spinner-border spinner-border-lg align-center"></span>
+            </td>
+        </tr>
+    </tbody>
+</table> 
