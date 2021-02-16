@@ -1,15 +1,15 @@
 <h1>Pangolin Users</h1>
-<!-- <a routerLink="add" class="btn btn-sm btn-success mb-2">Add User</a> -->
+<a routerLink="add" class="btn btn-sm btn-success mb-2">Add User</a>
 <table class="table table-striped">
     <thead>
         <tr>
             <th style="width: 15%">First Name</th>
             <th style="width: 15%">Last Name</th>
             <th style="width: 15%">Username</th>
-            <th style="width: 15%">Age</th>
+            <!-- <th style="width: 15%">Age</th>
             <th style="width: 15%">Family</th>
             <th style="width: 15%">Race</th>
-            <th style="width: 15%">Food</th>
+            <th style="width: 15%">Food</th> -->
             <th style="width: 10%"></th>
         </tr>
     </thead>
@@ -19,10 +19,10 @@
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
             <td>{{user.username}}</td>
-            <td>{{user.age}}</td>
+            <!-- <td>{{user.age}}</td>
             <td>{{user.family}}</td>
             <td>{{user.race}}</td>
-            <td>{{user.food}}</td>
+            <td>{{user.food}}</td> -->
             <td style="white-space: nowrap">
                 <!-- <a routerLink="edit/{{user.id}}" class="btn btn-sm btn-primary mr-1">Edit</a> -->
                  <!-- <button (click)="deleteUser(user.id)" class="btn btn-sm btn-primary mr-1" [disabled]="user.isDeleting">
@@ -35,6 +35,10 @@
                     <span *ngIf="user.addToCart" class="spinner-border spinner-border-sm"></span>
                     <span *ngIf="!user.addToCart">Add Friend</span>
                 </button>
+<!-- 
+                <button (click)="addToCart(user)" class="btn btn-sm btn-primary mr-1" [disabled]="user.addToCart">
+                    <span *ngIf="!user">Add</span>
+                </button> -->
 
             </td> 
         </tr>

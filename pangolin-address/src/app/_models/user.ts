@@ -12,5 +12,6 @@ export class User {
     race: string;
     food: string;
     token: string;
+    fileInput: HTMLImageElement;
  //friend:FriendComponent
 }

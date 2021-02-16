@@ -16,6 +16,8 @@ import { HomeComponent } from './home';
 import { AddEditComponent } from './users/add-edit.component';
 import { ListComponent } from './users/list.component';
 import { FriendComponent } from './friends/friend.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import { FriendComponent } from './friends/friend.component';
             { path: '', component: HomeComponent },
             { path: 'users', component: ListComponent },
             { path: 'friends', component: FriendComponent },
-            ])
+            ]),
+        ImageCropperModule
+
     ],
     declarations: [
         AppComponent,
@@ -36,7 +40,7 @@ import { FriendComponent } from './friends/friend.component';
         HomeComponent,
         AddEditComponent,
         ListComponent,
-        FriendComponent,   
+        FriendComponent,
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

@@ -2,6 +2,42 @@
 <h1 *ngIf="!isAddMode">Edit User</h1>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-row">
+       <!-- <div>
+            <div *ngIf="!changingImage">
+                <img fxFlex="128px" src="http://placehold.it/128x128" class="profile-img">
+                 <button type="button" (click)="changingImageClick()">Add Image</button>
+            </div>
+            <input type="file" (change)="fileChangeEvent($event)" />
+            
+            <image-cropper [image]="data"
+            [imageChangedEvent]="imageChangedEvent"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="4 / 3"
+            format="png"
+            (imageCropped)="imageCropped($event)"
+            (imageLoaded)="imageLoaded()"
+            (cropperReady)="cropperReady()"
+            (loadImageFailed)="loadImageFailed()"
+            ></image-cropper>
+            <img [src]="croppedImage"/>
+            
+            <div *ngIf="changingImage">
+            <img fxFlex="128px" src="http://placehold.it/128x128" class="profile-img">
+            <button type="button" (click)="SaveNewImage()">Save Image</button>
+            </div>
+
+
+    </div> -->
+
+    <div class="form-group col">
+        <label class="hoverable" for="fileInput">
+            <img [src]="url ? url : 'https://www.w3schools.com/howto/img_avatar.png'"> 
+            <div class="hover-text">Choose photo</div>
+            <div class="background"></div>
+            <input id="fileInput" type='file' (change)="onSelectFile($event)" formControlName="fileInput" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fileInput.errors }">
+            <button *ngIf="url" (click)="delete()" >delete</button>
+        </label>
+    </div>
         <div class="form-group col">
             <label for="firstName">First Name</label>
             <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
@@ -16,7 +52,10 @@
                 <div *ngIf="f.lastName.errors.required">Last Name is required</div>
             </div>
         </div>
-    </div>
+    </div> 
+
+
+
     <div class="form-row">
         <div class="form-group col">
             <label for="age">Age</label>
@@ -55,7 +94,7 @@
                 <div *ngIf="f.username.errors.required">Username is required</div>
             </div>
         </div>
-        <!-- <div class="form-group col">
+        <div class="form-group col">
             <label for="password">
                 Password
                 <em *ngIf="!isAddMode">(Leave blank to keep the same password)</em>
@@ -65,7 +104,7 @@
                 <div *ngIf="f.password.errors.required">Password is required</div>
                 <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
             </div>
-        </div> -->
+        </div>
     </div>
     <div class="form-group">
         <button [disabled]="loading" class="btn btn-primary">
@@ -75,3 +114,141 @@
         <a routerLink="/users" class="btn btn-link">Cancel</a>
     </div>
 </form>
+
+
+
+
+
+
+<!-- <style>
+    .my-drop-zone { border: dotted 3px lightgray; }
+    .nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+    .another-file-over-class { border: dotted 3px green; }
+ 
+    html, body { height: 100%; }
+</style>
+ 
+<div class="container">
+ 
+    <div class="navbar navbar-default">
+        <div class="navbar-header">
+            <a class="navbar-brand" href>Angular2 File Upload</a>
+        </div>
+    </div>
+ 
+    <div class="row">
+ 
+        <div class="col-md-3">
+ 
+            <h3>Select files</h3>
+ 
+            <div ng2FileDrop
+                 [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                 (fileOver)="fileOverBase($event)"
+                 [uploader]="uploader"
+                 class="well my-drop-zone">
+                Base drop zone
+            </div>
+ 
+            <div ng2FileDrop
+                 [ngClass]="{'another-file-over-class': hasAnotherDropZoneOver}"
+                 (fileOver)="fileOverAnother($event)"
+                 [uploader]="uploader"
+                 class="well my-drop-zone">
+                Another drop zone
+            </div>
+ 
+            Multiple
+            <input type="file" ng2FileSelect [uploader]="uploader" multiple  /><br/>
+ 
+            Single
+            <input type="file" ng2FileSelect [uploader]="uploader" />
+        </div>
+ 
+        <div class="col-md-9" style="margin-bottom: 40px">
+ 
+            <h3>Upload queue</h3>
+            <p>Queue length: {{ uploader?.queue?.length }}</p>
+ 
+            <table class="table">
+                <thead>
+                <tr>
+                    <th width="50%">Name</th>
+                    <th>Size</th>
+                    <th>Progress</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of uploader.queue">
+                    <td><strong>{{ item?.file?.name }}</strong></td>
+                    <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                    <td *ngIf="uploader.options.isHTML5">
+                        <div class="progress" style="margin-bottom: 0;">
+                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                        <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                        <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                    </td>
+                    <td nowrap>
+                        <button type="button" class="btn btn-success btn-xs"
+                                (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                            <span class="glyphicon glyphicon-upload"></span> Upload
+                        </button>
+                        <button type="button" class="btn btn-warning btn-xs"
+                                (click)="item.cancel()" [disabled]="!item.isUploading">
+                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs"
+                                (click)="item.remove()">
+                            <span class="glyphicon glyphicon-trash"></span> Remove
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+ 
+            <div>
+                <div>
+                    Queue progress:
+                    <div class="progress" style="">
+                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-success btn-s"
+                        (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                    <span class="glyphicon glyphicon-upload"></span> Upload all
+                </button>
+                <button type="button" class="btn btn-warning btn-s"
+                        (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+                </button>
+                <button type="button" class="btn btn-danger btn-s"
+                        (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                    <span class="glyphicon glyphicon-trash"></span> Remove all
+                </button>
+            </div>
+ 
+        </div>
+ 
+    </div>
+ 
+    <br><br>
+ 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Response</div>
+                <div class="panel-body">
+                  {{ response }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+

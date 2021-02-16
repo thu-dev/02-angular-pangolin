@@ -2,17 +2,61 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
+import { FileUploader } from 'ng2-file-upload';
 
 import { AccountService, AlertService, CartService } from '../_services';
 
-@Component({ templateUrl: 'add-edit.component.html' })
+@Component({ templateUrl: 'add-edit.component.html',
+styleUrls: [ './add-edit.component.css' ]
+
+ })
+
+
+
+
 export class AddEditComponent implements OnInit {
     form: FormGroup;
     id: string;
     isAddMode: boolean;
     loading = false;
     submitted = false;
+
+
+
+    name = 'Angular 4';
+    url = null;
+
+    changingImage: boolean;
+
+    imageChangedEvent: any = '';
+    croppedImage: any = '';
+    date: any;
+
+
+    uploader:FileUploader;
+    hasBaseDropZoneOver:boolean;
+    hasAnotherDropZoneOver:boolean;
+    response:string;
+    
+
+    // fileChangeEvent(event: any): void {
+    //     this.imageChangedEvent = event;
+    // }
+    // imageCropped(event: ImageCroppedEvent) {
+    //     this.croppedImage = event.base64;
+    // }
+    // imageLoaded(image: HTMLImageElement) {
+    //     // show cropper
+    // }
+    // cropperReady() {
+    //     // cropper ready
+    // }
+    // loadImageFailed() {
+    //     // show message
+    // }
+
 
     constructor(
         private formBuilder: FormBuilder,
@@ -22,6 +66,12 @@ export class AddEditComponent implements OnInit {
         private alertService: AlertService,
         private cartService: CartService,
     ) {}
+
+
+    
+    
+    
+    
 
     ngOnInit() {
         this.id = this.route.snapshot.params['id'];
@@ -41,6 +91,7 @@ export class AddEditComponent implements OnInit {
             family: [''],
             race: [''],
             food: [''],
+            fileinput: [''],
             password: ['', passwordValidators]
         });
 
@@ -55,6 +106,7 @@ export class AddEditComponent implements OnInit {
                     this.f.family.setValue(x.family);
                     this.f.race.setValue(x.race);
                     this.f.food.setValue(x.food);
+                    this.f.fileinput.setValue(x.fileInput);
                 });
         }
     }
@@ -108,4 +160,30 @@ export class AddEditComponent implements OnInit {
                     this.loading = false;
                 });
     }
+
+    changingImageClick() {
+        this.changingImage = true;
+    }
+
+    SaveNewImage() {
+        this.changingImage = false;
+    }
+
+
+    onSelectFile(event) {
+        if (event.target.files && event.target.files[0]) {
+        var reader = new FileReader();
+      
+        reader.readAsDataURL(event.target.files[0]); // read file as data url
+      
+        reader.onload = (event) => { // called once readAsDataURL is completed
+            this.url = event.target.result;
+            }
+          }
+        }
+        public delete(){
+          this.url = null;
+        }
+
+
 }

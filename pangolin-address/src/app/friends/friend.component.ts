@@ -15,8 +15,6 @@ export class FriendComponent implements OnInit {
 
 
     friends = this.cartService.getItems();
-
-
     users = null;
 
     constructor(private accountService: AccountService,
